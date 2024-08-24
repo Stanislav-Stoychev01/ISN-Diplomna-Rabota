@@ -1,8 +1,7 @@
 package com.graduationproject.isn.domain.records.request;
 
+import lombok.Data;
 import lombok.NonNull;
 
-public record SignUpRequest(
-        @NonNull String username, @NonNull String password,
-        @NonNull String email, @NonNull String firstName, @NonNull String lastName) {
+public record SignUpRequest(String username, String password) {
 }
