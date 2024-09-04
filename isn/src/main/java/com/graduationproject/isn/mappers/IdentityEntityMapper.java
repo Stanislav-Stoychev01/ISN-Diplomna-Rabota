@@ -1,4 +1,4 @@
-package com.graduationproject.isn.mapper;
+package com.graduationproject.isn.mappers;
 
 import com.graduationproject.isn.domain.entity.IdentityEntity;
 import com.graduationproject.isn.domain.records.request.SignInRequest;
@@ -12,5 +12,6 @@ public interface IdentityEntityMapper {
     IdentityEntityMapper INSTANCE = Mappers.getMapper(IdentityEntityMapper.class);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", source = "password")
     IdentityEntity signUpRequestToIdentityEntity(SignInRequest signUpRequest, String password);
 }

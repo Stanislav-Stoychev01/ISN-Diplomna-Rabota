@@ -8,26 +8,26 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-@Validated
-@RestController("/auth" /* Does not work? */)
+@Controller
 @RequiredArgsConstructor
+@RequestMapping("/identity")
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/signUp")
-    public ResponseEntity<SignUpResponse> signUp(@Valid SignUpRequest signUpRequest) {
+    public ResponseEntity<SignUpResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         SignUpResponse signUpResponse = authService.signUp(signUpRequest);
-        return new ResponseEntity<>(signUpResponse, HttpStatus.OK);
+        return new ResponseEntity<>(signUpResponse, HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/signIn")
-    public ResponseEntity<Void> signUp(@Valid @RequestBody SignInRequest signInRequest) {
+    public ResponseEntity<Void> signIn(@Valid @RequestBody SignInRequest signInRequest) {
         authService.signIn(signInRequest);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

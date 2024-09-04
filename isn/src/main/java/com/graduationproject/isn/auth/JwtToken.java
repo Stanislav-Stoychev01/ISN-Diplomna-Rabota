@@ -1,7 +1,6 @@
 package com.graduationproject.isn.auth;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.graduationproject.isn.util.JwtSigningUtil;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -21,6 +20,6 @@ public class JwtToken extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return // TODO: get Username;
+        return JwtSigningUtil.extractUsername(this.jwtToken);
     }
 }

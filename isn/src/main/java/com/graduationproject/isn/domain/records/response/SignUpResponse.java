@@ -2,5 +2,7 @@ package com.graduationproject.isn.domain.records.response;
 
 import lombok.NonNull;
 
-public record SignUpResponse(@NonNull int expiresAfter, @NonNull String token) {
+import java.util.Date;
+
+public record SignUpResponse(@NonNull Date expirationDate, @NonNull String token) {
 }

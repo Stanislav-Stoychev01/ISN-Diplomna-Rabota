@@ -2,7 +2,13 @@ package com.graduationproject.isn.domain.enums.errorreasons;
 
 public enum AuthErrorReason implements ErrorReason {
 
-    INVALID_CREDENTIALS("Provided user is already exits.");
+    INVALID_CREDENTIALS("User credentials does not match"),
+
+    INVALID_JWT_CLAIMS("Missing access permissions"),
+
+    INVALID_LOGIN_CREDENTIALS("Incorrect username or password."),
+
+    INVALID_AUTHENTICATION("An error occurred during authentication.");
     
     private final String errorMessage;
 
