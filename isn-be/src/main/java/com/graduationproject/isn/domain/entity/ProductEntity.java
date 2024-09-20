@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +31,14 @@ public class ProductEntity {
     @Basic
     @Column(name = "name")
     private String name;
+
+    @Basic
+    @Column(name = "price")
+    private String price;
+
+    @Basic
+    @Column(name = "imagePath")
+    private String productImagePath;
 
     @ManyToMany(mappedBy = "products")
     private List<WebsiteEntity> websites;

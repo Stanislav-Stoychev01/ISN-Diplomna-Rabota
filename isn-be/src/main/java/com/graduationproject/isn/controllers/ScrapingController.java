@@ -17,7 +17,6 @@ public class ScrapingController {
 
     private final ScrapingService scrapingService;
 
-    // TODO: Postman returns 200 OK when token has expired and no body
     // TODO: Consider header that extracts the current geolocation.
     @GetMapping("/{productName}")
     public ResponseEntity<ScrapedProductsResponse> getScrapedInformation(

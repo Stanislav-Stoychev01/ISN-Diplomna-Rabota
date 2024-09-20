@@ -10,7 +10,8 @@ import com.graduationproject.isn.domain.enums.errorreasons.GoogleApiErrorReason;
 import com.graduationproject.isn.exceptions.APIException;
 import com.graduationproject.isn.mappers.WebsiteMapper;
 import com.graduationproject.isn.repositories.WebsiteRepository;
-import jakarta.transaction.Transactional;
+import com.graduationproject.isn.util.UrlUtil;
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -53,7 +54,7 @@ public class GoogleApiService {
         stringBuilder.append(GoogleApiConstants.GOOGLE_ENGINE_QUERY_PARAM);
         stringBuilder.append(engineId);
         stringBuilder.append(GoogleApiConstants.GOOGLE_SEARCH_INPUT_QUERY_PARAM);
-        stringBuilder.append(searchInput.replace(" ", "%20"));
+        stringBuilder.append(UrlUtil.parseToUrlQueryParamFormat(searchInput));
         stringBuilder.append(GoogleApiConstants.GOOGLE_SEARCH_INPUT_RESULT_ENHANCEMENT);
         stringBuilder.append(GoogleApiConstants.GOOGLE_GEOLOCATION);
         stringBuilder.append(GoogleApiConstants.GOOGLE_INTERFACE_LANGUAGE);
@@ -64,8 +65,7 @@ public class GoogleApiService {
         return stringBuilder.toString();
     }
 
-    @Transactional
-    public Collection<WebsiteEntity> performGoogleSearch(String googleSearchUrl, String targetProduct) {
+    public Collection<WebsiteEntity> loadAssociatedUrls(String googleSearchUrl, String targetProduct) {
         // TODO: This is slow operation so maybe consider timeout?
         Collection<WebsiteEntity> websiteEntities = websiteRepository
             .findAllByProductsName(targetProduct)
@@ -73,17 +73,14 @@ public class GoogleApiService {
             .filter(websiteEntity -> isBlacklistUrl(websiteEntity.getUrl()))
             .toList();
 
-        // Not enough search result so search should be performed
-        if (websiteEntities.size() < 5) {
+        if (Collections.isEmpty(websiteEntities)) {
             websiteEntities = scrapeWebForWebsites(googleSearchUrl);
+
+            websiteEntities = websiteEntities
+                .stream()
+                .filter(websiteEntity -> isBlacklistUrl(websiteEntity.getUrl()))
+                .toList();
         }
-
-        websiteEntities = websiteEntities
-            .stream()
-            .filter(websiteEntity -> isBlacklistUrl(websiteEntity.getUrl()))
-            .toList();
-
-        websiteRepository.saveAll(websiteEntities);
 
         return websiteEntities;
     }

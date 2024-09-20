@@ -2,7 +2,9 @@ package com.graduationproject.isn.domain.enums.errorreasons;
 
 public enum GoogleApiErrorReason implements ErrorReason {
 
-    CONNECTION_UNAVAILABLE("Current service connection is not available.");
+    CONNECTION_UNAVAILABLE("Current service connection is not available."),
+
+    INTERRUPTED("Current service connection is not available.");
 
     private final String message;
 
